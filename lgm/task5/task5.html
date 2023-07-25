@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Student Result Management System</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-image: url("bgd.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      h1 {
+        text-align: center;
+        font-family: "Helvetica", sans-serif;
+        color: yellow;
+      }
+
+      form {
+        max-width: 400px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      form label,
+      form input {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      form input[type="text"],
+      form input[type="number"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      form button[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 8px 16px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: #fff;
+      }
+
+      .table-container {
+        max-width: 800px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      #resultTable {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      #resultTable th,
+      #resultTable td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+      }
+
+      .edit-button {
+        background-color: #2196f3;
+        color: #fff;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .edit-button:hover {
+        background-color: #0c7cd5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Student Result Management System</h1>
+
+    <form id="resultForm">
+      <label for="name">Student Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="roll">Roll Number:</label>
+      <input type="text" id="roll" name="roll" required />
+
+      <label for="botany">Botany Marks:</label>
+      <input
+        type="number"
+        id="botany"
+        name="botany"
+        min="0"
+        max="100"
+        required
+      />
+
+      <label for="zoology">Zoology Marks:</label>
+      <input
+        type="number"
+        id="zoology"
+        name="zoology"
+        min="0"
+        max="100"
+        required
+      />
+
+      <label for="chemistry">Chemistry Marks:</label>
+      <input
+        type="number"
+        id="chemistry"
+        name="chemistry"
+        min="0"
+        max="100"
+        required
+      />
+
+      <button type="submit">Add Result</button>
+    </form>
+
+    <div class="table-container">
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Botany Marks</th>
+            <th>Zoology Marks</th>
+            <th>Chemistry Marks</th>
+            <th>Total</th>
+            <th>Percentage</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Result data will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const resultForm = document.getElementById("resultForm");
+      const resultTable = document.getElementById("resultTable");
+      const tbody = resultTable.querySelector("tbody");
+
+      resultForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const nameInput = document.getElementById("name");
+        const rollInput = document.getElementById("roll");
+        const botanyInput = document.getElementById("botany");
+        const zoologyInput = document.getElementById("zoology");
+        const chemistryInput = document.getElementById("chemistry");
+
+        const name = nameInput.value;
+        const roll = rollInput.value;
+        const botany = botanyInput.value;
+        const zoology = zoologyInput.value;
+        const chemistry = chemistryInput.value;
+
+        const total =
+          parseInt(botany) + parseInt(zoology) + parseInt(chemistry);
+        const percentage = ((total / 300) * 100).toFixed(2);
+
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+        <td>${name}</td>
+        <td>${roll}</td>
+        <td>${botany}</td>
+        <td>${zoology}</td>
+        <td>${chemistry}</td>
+        <td>${total}</td>
+        <td>${percentage}%</td>
+        <td>
+          <button class="edit-button" onclick="editResult(this)">Edit</button>
+        </td>
+      `;
+
+        tbody.appendChild(newRow);
+
+        nameInput.value = "";
+        rollInput.value = "";
+        botanyInput.value = "";
+        zoologyInput.value = "";
+        chemistryInput.value = "";
+      });
+
+      function editResult(button) {
+        const row = button.parentNode.parentNode;
+        const cells = row.querySelectorAll("td");
+
+        const name = cells[0].textContent;
+        const roll = cells[1].textContent;
+        const botany = cells[2].textContent;
+        const zoology = cells[3].textContent;
+        const chemistry = cells[4].textContent;
+
+        const nameInput = document.getElementById("name");
+        const rollInput = document.getElementById("roll");
+        const botanyInput = document.getElementById("botany");
+        const zoologyInput = document.getElementById("zoology");
+        const chemistryInput = document.getElementById("chemistry");
+
+        nameInput.value = name;
+        rollInput.value = roll;
+        botanyInput.value = botany;
+        zoologyInput.value = zoology;
+        chemistryInput.value = chemistry;
+
+        row.remove();
+      }
+    </script>
+  </body>
+</html>
